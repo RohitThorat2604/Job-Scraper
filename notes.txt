@@ -1,0 +1,12 @@
+
+2 tables: 
+    1. User (uid, user information)
+    2. Jobs (jid, title, , company_name, location, date_posted, experience_level, skill = user_entered_title, employement_type, apply_link, job_portal)
+
+
+    Schema:
+     Jobs (title, location, date_posted, experience_level, skill = user_entered_title, employement_type, some_link, linkedin)
+    3. user_job (uid, jid)
+
+    
+     
