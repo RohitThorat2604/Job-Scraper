@@ -90,8 +90,11 @@ def extractJobLinksFromLinkedIn(title, location):
     JOB_DETAILS = []
 
     for link in JOB_LINKS:
-        job_detail = getJobDetailsFromLinkedIn(link)
-        JOB_DETAILS.append(job_detail)
+        try:
+            job_detail = getJobDetailsFromLinkedIn(link)
+            JOB_DETAILS.append(job_detail)
+        except Exception:
+            continue
 
     for job_detail in JOB_DETAILS:
         print(job_detail)
@@ -102,7 +105,7 @@ def extractJobLinksFromLinkedIn(title, location):
     
 
 
-extractJobLinksFromLinkedIn("C++", "Banglore")
+extractJobLinksFromLinkedIn("java", "Pune")
 
 
 # new code is here

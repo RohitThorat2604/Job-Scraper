@@ -1,122 +1,143 @@
-
 import tkinter as tk
 from tkinter import messagebox
 import re
 
+class JobPortal:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Job Portal - Register")
+        # self.master.geometry("600x450")
+        self.center_window(self.master, 600, 450)
 
-def validate_email(email):
-    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    return bool(re.match(pattern, email))
+        self.register_frame = tk.Frame(self.master, padx=20, pady=20, bg='#f0f0f0')
+        
+        self.register_frame.pack()
 
-def register():
-   
-    name = name_entry.get()
-    email = email_entry.get()
-    city = city_entry.get()
-    skills= skills_entry.get()
-    expirence=skills_entry.get()
+        self.create_register_widgets()
 
- 
-    if not name or not email or not city or not skills or not expirence:
-        messagebox.showerror("Error", "All fields must be filled out.")
-        return
+        self.login_window = tk.Toplevel(self.master)
+        self.login_window.title("Job Portal - Login")
+        self.login_window.withdraw()
 
-    # Validate that the email is in a valid format
-    if not validate_email(email):
-        messagebox.showerror("Error", "Please enter a valid email address.")
-        return
+        self.login_frame = tk.Frame(self.login_window, padx=50, pady=50, bg='#f0f0f0')
+        self.login_frame.pack()
 
-    # If everything is valid, register the user and show a success message
-    messagebox.showinfo("Success", "User registered successfully!")
+        self.create_login_widgets()
 
-    # Redirect the user to the login page
-    login_window.deiconify()
-    window.withdraw()
+    def create_register_widgets(self):
 
+        tk.Label(self.register_frame, text="Username:", bg='#f0f0f0', fg='#333').grid(row=0, column=0, sticky="w")
+        self.username_entry = tk.Entry(self.register_frame, width=30, bg='#fff', fg='#333')
+        self.username_entry.grid(row=0, column=1, padx=10, pady=5)
 
-def login():
- 
-    login_window.deiconify()
-    window.withdraw()
+        tk.Label(self.register_frame, text="Name:", bg='#f0f0f0', fg='#333').grid(row=1, column=0, sticky="w")
+        self.name_entry = tk.Entry(self.register_frame, width=30, bg='#fff', fg='#333')
+        self.name_entry.grid(row=1, column=1, padx=10, pady=5)
 
-def back_to_register():
-   
-    window.deiconify()
-    login_window.withdraw()
+        tk.Label(self.register_frame, text="Email:", bg='#f0f0f0', fg='#333').grid(row=2, column=0, sticky="w")
+        self.email_entry = tk.Entry(self.register_frame, width=30, bg='#fff', fg='#333')
+        self.email_entry.grid(row=2, column=1, padx=10, pady=5)
 
-def login_validate():
+        tk.Label(self.register_frame, text="City:", bg='#f0f0f0', fg='#333').grid(row=3, column=0, sticky="w")
+        self.city_entry = tk.Entry(self.register_frame, width=30, bg='#fff', fg='#333')
+        self.city_entry.grid(row=3, column=1, padx=10, pady=5)
 
-    username = login_username_entry.get()
-    password = login_password_entry.get()
+        tk.Label(self.register_frame, text="Skills:", bg='#f0f0f0', fg='#333').grid(row=4, column=0, sticky="w")
+        self.skills_frame = tk.Frame(self.register_frame, bg='#f0f0f0')
+        self.skills_frame.grid(row=4, column=1, padx=10, pady=5)
 
-    if not username or not password:
-        messagebox.showerror("Error", "All fields must be filled out.")
-        return
+        self.skills_vars = []
+        self.skills_checkboxes = []
 
+        self.skills_list = ["Java", "Python", "JavaScript", "C++", "Sql", "HTML", "CSS"]
+        for i, skill in enumerate(self.skills_list):
+            var = tk.IntVar()
+            checkbox = tk.Checkbutton(self.skills_frame, text=skill, variable=var)
+            checkbox.pack(side=tk.LEFT)
+            self.skills_vars.append(var)
+            self.skills_checkboxes.append(checkbox)
 
- 
-    messagebox.showinfo("Success", "User logged in successfully!")
+        tk.Label(self.register_frame, text="Experience:", bg='#f0f0f0', fg='#333').grid(row=5, column=0, sticky="w")
+        self.experience_entry = tk.Entry(self.register_frame, width=30, bg='#fff', fg='#333')
+        self.experience_entry.grid(row=5, column=1, padx=10, pady=5)
 
-window = tk.Tk()
-window.title("Job Portal - Register")
+        tk.Button(self.register_frame, text="Register", command=self.register, bg='#4CAF50', fg='#fff').grid(row=6, column=0, columnspan=2, pady=10)
+        tk.Button(self.register_frame, text="Login", command=self.login, bg='#2196F3', fg='#fff').grid(row=7, column=0, columnspan=2, pady=10)
 
+    def create_login_widgets(self):
+        tk.Label(self.login_frame, text="Username:", bg='#f0f0f0', fg='#333').grid(row=0, column=0, sticky="w")
+        self.login_username_entry = tk.Entry(self.login_frame, width=30, bg='#fff', fg='#333')
+        self.login_username_entry.grid(row=0, column=1, padx=10, pady=5)
 
-name_label = tk.Label(window, text="Name")
-name_label.grid(row=0, column=0)
-name_entry = tk.Entry(window)
-name_entry.grid(row=0, column=1)
+        tk.Label(self.login_frame, text="Password:", bg='#f0f0f0', fg='#333').grid(row=1, column=0, sticky="w")
+        self.login_password_entry = tk.Entry(self.login_frame, width=30, bg='#fff', fg='#333', show="*")
+        self.login_password_entry.grid(row=1, column=1, padx=10, pady=5)
 
-email_label = tk.Label(window, text="Email")
-email_label.grid(row=1, column=0)
-email_entry = tk.Entry(window)
-email_entry.grid(row=1, column=1)
+        tk.Button(self.login_frame, text="Login", command=self.login_validate, bg='#4CAF50', fg='#fff').grid(row=2, column=0, columnspan=2, pady=10)
+        tk.Button(self.login_frame, text="Back to Register", command=self.back_to_register, bg='#2196F3', fg='#fff').grid(row=3, column=0, columnspan=2, pady=10)
 
-city_label = tk.Label(window, text="city")
-city_label.grid(row=2, column=0)
-city_entry = tk.Entry(window)
-city_entry.grid(row=2, column=1)
+    def validate_email(self, email):
+        pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        return bool(re.match(pattern, email))
 
-skills_label = tk.Label(window, text="skills")
-skills_label.grid(row=3, column=0)
-skills_entry = tk.Entry(window)
-skills_entry.grid(row=3, column=1)
+    def register(self):
+        username = self.username_entry.get().strip()
+        name = self.name_entry.get().strip()
+        email = self.email_entry.get().strip()
+        city = self.city_entry.get().strip()
+        experience = self.experience_entry.get().strip()
 
-expirence_label = tk.Label(window, text="expirence")
-expirence_label.grid(row=4, column=0)
-expirence_entry = tk.Entry(window)
-expirence_entry.grid(row=4, column=1)
+        # self.skills_vars = [1, 0, 1]
+        # self.skills_list = [java, c++, python]
+        skills = [self.skills_list[i] for i, var in enumerate(self.skills_vars) if var.get() == 1]
 
-# Create the registration button
-register_button = tk.Button(window, text="Register", command=register)
-register_button.grid(row=5, column=0)
+        if not username or not name or not email or not city or not skills or not experience:
+            messagebox.showerror("Error", "All fields must be filled out.")
+            return
 
-# Create the login button
-login_button = tk.Button(window, text="Already registered? Login", command=login)
-login_button.grid(row=5, column=1)
+        if not self.validate_email(email):
+            messagebox.showerror("Error", "Please enter a valid email address.")
+            return
 
-# Create the login window
-login_window = tk.Toplevel()
-login_window.title("Job Portal - Login")
-login_window.withdraw()
+        # check if username already exists or not
+        # check if email is unique
+        print(username)
+        print(skills)
 
-
-login_username_label = tk.Label(login_window, text="username")
-login_username_label.grid(row=0, column=0)
-login_username_entry = tk.Entry(login_window)
-login_username_entry.grid(row=0, column=1)
-
-login_password_label = tk.Label(login_window, text="Password")
-login_password_label.grid(row=1, column=0)
-login_password_entry = tk.Entry(login_window, show="*")
-login_password_entry.grid(row=1, column=1)
-
-# Create the login button for the login window
-login_login_button = tk.Button(login_window, text="Login", command=login_validate)
-login_login_button.grid(row=2, column=0)
+        messagebox.showinfo("Success", "User registered successfully!")
 
 
-register_button = tk.Button(login_window, text="Register", command=back_to_register)
-register_button.grid(row=2, column=1)
+    def login(self):
+        self.login_window.deiconify()
+        self.master.withdraw()
+        
 
+    def back_to_register(self):
+        self.master.deiconify()
+        self.login_window.withdraw()
 
-window.mainloop()
+    def login_validate(self):
+        username = self.login_username_entry.get().strip()
+        password = self.login_password_entry.get().strip()
+
+        if not username or not password:
+            messagebox.showerror("Error", "All fields must be filled out.")
+            return
+
+        messagebox.showinfo("Success", "User logged in successfully!")
+    
+    def center_window(self, window, width, height):
+        # Get screen width and height
+        screen_width = window.winfo_screenwidth()
+        screen_height = window.winfo_screenheight()
+
+        # Calculate position x and y coordinates
+        x = (screen_width // 2) - (width // 2)
+        y = (screen_height // 2) - (height // 2)
+
+        # Set geometry
+        window.geometry(f'{width}x{height}+{x}+{y}')
+
+root = tk.Tk()
+job_portal = JobPortal(root)
+root.mainloop()
