@@ -9,20 +9,15 @@ class JobPortal:
         # self.master.geometry("600x450")
         self.center_window(self.master, 600, 450)
 
-        self.register_frame = tk.Frame(self.master, padx=20, pady=20, bg='#f0f0f0')
+        self.register_window = self.render_register_window()
+        self.register_window.pack()
+
         
-        self.register_frame.pack()
 
-        self.create_register_widgets()
-
-        self.login_window = tk.Toplevel(self.master)
-        self.login_window.title("Job Portal - Login")
-        self.login_window.withdraw()
-
-        self.login_frame = tk.Frame(self.login_window, padx=50, pady=50, bg='#f0f0f0')
+        self.login_window = self.render_login_window()
         self.login_frame.pack()
 
-        self.create_login_widgets()
+        
 
     def create_register_widgets(self):
 
@@ -108,13 +103,38 @@ class JobPortal:
 
 
     def login(self):
-        self.login_window.deiconify()
-        self.master.withdraw()
+        self.register_window.destroy()
+        
+        self.login_window = self.render_login_window()
+        self.login_window.pack()
         
 
     def back_to_register(self):
-        self.master.deiconify()
-        self.login_window.withdraw()
+        self.login_window.destroy()
+        
+        self.register_window = self.render_register_window()
+        self.register_window.pack()
+
+    def render_register_window(self):
+        register_window = tk.Frame(self.master, padx=20, pady=20, bg='#f0f0f0')
+        self.register_frame = tk.Frame(register_window, padx=20, pady=20, bg='#f0f0f0')
+
+        self.create_register_widgets()
+
+        self.register_frame.pack()
+        return register_window
+    
+    def render_login_window(self):
+        login_window = tk.Frame(self.master, padx=20, pady=20, bg='#f0f0f0')
+        # self.login_window.title("Job Portal - Login")
+        # self.login_window.withdraw()
+
+        self.login_frame = tk.Frame(login_window, padx=50, pady=50, bg='#f0f0f0')
+
+        self.create_login_widgets()
+        
+        self.login_frame.pack()
+        return login_window
 
     def login_validate(self):
         username = self.login_username_entry.get().strip()
