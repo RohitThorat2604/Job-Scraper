@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 import re
 
+from db import db
+
 class JobPortal:
     def __init__(self, master):
         self.master = master
@@ -96,10 +98,18 @@ class JobPortal:
 
         # check if username already exists or not
         # check if email is unique
-        print(username)
-        print(skills)
+        
+        skills = f"{skills}"
 
-        messagebox.showinfo("Success", "User registered successfully!")
+
+        
+        try:
+            db.register_user(username, name, email, city, experience, skills)
+            messagebox.showinfo("Success", "User registered successfully!")
+        except Exception:
+            messagebox.showinfo("Error", "User was not registered")
+
+        
 
 
     def login(self):
@@ -132,7 +142,7 @@ class JobPortal:
         self.login_frame = tk.Frame(login_window, padx=50, pady=50, bg='#f0f0f0')
 
         self.create_login_widgets()
-        
+
         self.login_frame.pack()
         return login_window
 
@@ -144,6 +154,8 @@ class JobPortal:
             messagebox.showerror("Error", "All fields must be filled out.")
             return
 
+
+        # check_validity(username, password)
         messagebox.showinfo("Success", "User logged in successfully!")
     
     def center_window(self, window, width, height):
