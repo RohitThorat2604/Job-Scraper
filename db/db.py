@@ -1,17 +1,18 @@
-import mysql.connector
+import mysql.connector 
 
-def register_user(username, name, email, city, experience, skills):
+def register_user(username, password,name, email, city, experience, skills):
     conn = mysql.connector.connect(
         host="bd29ifufkltzcl7iptht-mysql.services.clever-cloud.com",
         user="uxrjacjjzqdnv51i",
         password="qaz4uLVg4gfP6semxwUg",
-        database="bd29ifufkltzcl7iptht"
+        database="bd29ifufkltzcl7iptht",
+        port="3306"
     )
 
     cursor = conn.cursor()
 
     
-    SQL_INSERT_QUERY = f"Insert into User ( username,name,email,city,experience,skills) values( \"{username}\", \"{name}\", \"{email}\", \"{city}\", {experience}, \"{skills}\");"
+    SQL_INSERT_QUERY = f"Insert into User ( username,password,name,email,city,experience,skills) values( \"{username}\",\"{password}\", \"{name}\", \"{email}\", \"{city}\", {experience}, \"{skills}\");"
     
     cursor.execute(SQL_INSERT_QUERY)
 
@@ -20,8 +21,29 @@ def register_user(username, name, email, city, experience, skills):
     cursor.close()
     conn.close()
 
-"""
-# TODO:
+
+
+
+def validate_login(username, password):
+    """ Check if the password matches for a given username."""
+    conn = mysql.connector.connect(
+            host="bd29ifufkltzcl7iptht-mysql.services.clever-cloud.com",
+            user="uxrjacjjzqdnv51i",
+            password="qaz4uLVg4gfP6semxwUg",
+            database="bd29ifufkltzcl7iptht"
+        )
+
+    cursor = conn.cursor()
+    query = "SELECT 1 FROM User WHERE username = %s AND password = %s"
+    cursor.execute(query, (username, password))
+    result = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return result is not None
+
+
+"""""
+TODO:
     write a function to check if a username exists
         def is_user_exists(username):
             return true or false
