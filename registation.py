@@ -4,10 +4,16 @@ import re
 
 from db import db
 
+from display import views
+
 class JobPortal:
     def __init__(self, master):
         self.master = master
         self.master.title("Job Portal - Register")
+
+        views.HomeScreenDisplay(self.master)
+        return
+
         # self.master.geometry("600x450")
         self.center_window(self.master, 600, 450)
 
@@ -164,6 +170,15 @@ class JobPortal:
         try:
             if (db.validate_login(username, password)):
                 messagebox.showinfo("Success", "User logged in successfully!")
+
+                """
+                #########################
+                    RENDERING HOME SCREEN HERE 
+                #########################
+                """
+                # views.HomeScreenDisplay(self.master)
+
+
             else:
                 messagebox.showinfo("Error","Login failed")
         except Exception as e:
