@@ -162,7 +162,7 @@ class JobPortal:
          
        
         try:
-            if (db.check_validity(username, password)):
+            if (db.validate_login(username, password)):
                 messagebox.showinfo("Success", "User logged in successfully!")
             else:
                 messagebox.showinfo("Error","Login failed")
