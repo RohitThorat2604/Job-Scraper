@@ -24,7 +24,7 @@ def register_user(username, password,name, email, city, experience, skills):
 
 
 
-def validate_login(username, password):
+def check_validity(username, password):
     """ Check if the password matches for a given username."""
     conn = mysql.connector.connect(
             host="bd29ifufkltzcl7iptht-mysql.services.clever-cloud.com",
