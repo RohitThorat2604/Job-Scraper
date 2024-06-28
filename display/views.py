@@ -17,11 +17,22 @@ class HomeScreenDisplay:
         self.home_frame = tk.Frame(self.master, height=self.WINDOW_HEIGHT, width=self.WINDOW_WIDTH)
         self.home_frame.grid(padx=30, pady=30)
 
+        # PROFILE SECTION
         self.profile_frame = self.render_profile_frame()
         # Ensure the frame expands to fill the window
-        self.profile_frame.grid()
+        self.profile_frame.grid(row = 0, column=0, padx=25)
 
-        
+        #TITLE
+        self.title = tk.Label(self.home_frame, 
+                        text = "Online Job Aggregator", 
+                        highlightbackground = "black", 
+                        highlightthickness = 1,
+                        font = ("Arial", 20),
+                        width = 50,
+                        padx = 20 
+                    )
+        self.title.grid(row = 0, column = 1)
+
         self.master.mainloop()
     
     def render_profile_frame(self):
