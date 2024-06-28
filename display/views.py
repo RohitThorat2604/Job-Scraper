@@ -33,8 +33,8 @@ class HomeScreenDisplay:
         profile_frame = tk.Frame(self.home_frame, 
                     width=250,
                     height=600, 
-                    highlightbackground="black", 
-                    highlightthickness=2,
+                    # highlightbackground="black", 
+                    # highlightthickness=2,
                     padx=4,
                     pady=0,
 
@@ -42,17 +42,20 @@ class HomeScreenDisplay:
         profile_frame.grid(row=0, column=0, sticky="nsew")  # Place the frame in the left side of the window
 
         # Configure grid columns to expand with window resizing
-        # profile_frame.grid_columnconfigure(0, weight=1)
+        profile_frame.grid_columnconfigure(0, weight=1)
         # profile_frame.grid_rowconfigure(12, weight=1)
 
         # Section 1: Name
-        name_label = tk.Label(profile_frame, text="Siddharth Pawar", font=("Arial", 12, "bold"))
-        name_label.grid(row=0, column=0, padx=20, pady=10)
+        name_label = tk.Label(profile_frame, text="Siddharth Pawar", font=("Arial", 12, "bold"),  highlightbackground="black", highlightthickness=2,)
+        name_label.grid(row=0, column=0, pady=10, sticky="ew")
 
 
         # Section 2: Username, Email, City, Experience
-        user_creds_frame = tk.Frame(profile_frame)
-        user_creds_frame.grid(row=1, column=0, padx=20, pady=60, columnspan=1)
+        user_creds_frame = tk.Frame(profile_frame, 
+                    highlightbackground="black", 
+                    highlightthickness=2
+                )
+        user_creds_frame.grid(row=1, column=0, pady=30, columnspan=1, sticky="ew")
 
         Username_label = tk.Label(user_creds_frame, text="siddharth01", font=self.TITLE_STYLE)
         Username_label.grid(padx=20, pady=10)
@@ -69,20 +72,24 @@ class HomeScreenDisplay:
 
 
         # Section 3: Skills
-        skills_frame = tk.Frame(profile_frame)
-        skills_frame.grid(row=3, column=0, padx=20, pady=40)
+        skills_frame = tk.Frame(profile_frame,
+                    highlightbackground="black", 
+                    highlightthickness=2,
+                    width = profile_frame.winfo_width()
+                )
+        skills_frame.grid(row=3, column=0, columnspan=1, sticky="ew")
 
         skills_label = tk.Label(skills_frame, text="Skills:", font=self.TITLE_STYLE)
         skills_label.grid()
 
         for skill in skills:
-            skills_label = tk.Label(skills_frame, text=skill, font=("Arial", 10))
+            skills_label = tk.Label(skills_frame, text=skill, font=self.TITLE_STYLE)
             skills_label.grid()
 
 
         # Section 4: Edit Profile button
         edit_profile_button = tk.Button(profile_frame, text="Edit Profile", bg='#4CAF50', fg='#fff', font=self.TITLE_STYLE)
-        edit_profile_button.grid(row=4, column=0, columnspan=1, padx=20, pady=40)
+        edit_profile_button.grid(row=4, column=0, columnspan=1, padx=20, pady=80)
 
         
 
