@@ -1,4 +1,9 @@
 import tkinter as tk
+
+import PIL
+import PIL.Image
+import PIL.ImageTk
+
 class HomeScreenDisplay:
     def __init__(self, master):
 
@@ -14,7 +19,7 @@ class HomeScreenDisplay:
 
         self.master.title("Home Sceen - Online Job Aggregator")
 
-        self.home_frame = tk.Frame(self.master, height=self.WINDOW_HEIGHT, width=self.WINDOW_WIDTH)
+        self.home_frame = tk.Frame(self.master, height=self.WINDOW_HEIGHT, width=self.WINDOW_WIDTH, highlightbackground="black", highlightthickness=1)
         self.home_frame.grid(padx=30, pady=30)
 
         # PROFILE SECTION
@@ -29,9 +34,16 @@ class HomeScreenDisplay:
                         highlightthickness = 1,
                         font = ("Arial", 20),
                         width = 50,
-                        padx = 20 
+                        padx = 20,
+                        pady=20,
+                        height=1,
+                        anchor="w"
                     )
-        self.title.grid(row = 0, column = 1)
+        self.title.grid(row=0, column=1, sticky="n")
+
+        #JOB SEARCH RESULT SECTION
+        self.search_result_frame = self.render_search_result_frame()
+        self.search_result_frame.grid(row=0, column=1, sticky="ew")
 
         self.master.mainloop()
     
@@ -44,8 +56,8 @@ class HomeScreenDisplay:
         profile_frame = tk.Frame(self.home_frame, 
                     width=250,
                     height=600, 
-                    # highlightbackground="black", 
-                    # highlightthickness=2,
+                    highlightbackground="black", 
+                    highlightthickness=2,
                     padx=4,
                     pady=0,
 
@@ -105,7 +117,125 @@ class HomeScreenDisplay:
         
 
         return profile_frame
+
+    def render_search_result_frame(self):
+        search_result_frame = tk.Frame(
+            self.home_frame,
+            width = 100,
+            # highlightbackground="red",
+            # highlightthickness=1,
+            height=180,
+        )
+
         
+
+        search_result_count_label = tk.Label(
+            search_result_frame,
+            text="56 Jobs found matching your skills",
+            pady=20,
+            padx=40,
+            # highlightbackground="green",
+            # highlightthickness=1,
+            anchor="w"
+        )
+        search_result_count_label.grid(columnspan=1, sticky="ew")
+
+        job_container = tk.Frame(
+            search_result_frame,
+            # highlightbackground="green",
+            # highlightthickness=1,
+            padx=40
+        )
+        job_container.grid(sticky="ew")
+
+        job_frame = self.create_job_frame(job_container)
+        job_frame.grid()
+        
+        job_frame = self.create_job_frame(job_container)
+        job_frame.grid()
+        
+        job_frame = self.create_job_frame(job_container)
+        job_frame.grid()
+        
+        
+
+
+
+        return search_result_frame
+
+    def create_job_frame(self, job_container):
+        job_frame = tk.Frame(
+            job_container,
+            highlightbackground="black",
+            highlightthickness=1,
+        )
+
+
+        job_title_label = tk.Label(
+            job_frame,
+            text="Java developer",
+            font=self.TITLE_STYLE,
+            width=30,
+            pady=5,
+            anchor="w"
+        )
+        job_title_label.grid(columnspan=2)
+
+        company_name = tk.Label(
+            job_frame,
+            text= "Capgemini",
+            font=self.TITLE_STYLE,
+            padx=70,
+            pady=5
+        )
+        company_name.grid()
+
+        location_label = tk.Label(
+            job_frame,
+            text= "Pune, India",
+            font=self.TITLE_STYLE,
+            padx=70,
+            pady=5
+        )
+        location_label.grid()
+        
+        experience_level_label = tk.Label(
+            job_frame,
+            text= "1 Year",
+            font=self.TITLE_STYLE,
+            padx=80,
+            pady=5
+        )
+        experience_level_label.grid(row=1, column=1)
+
+        employement_type_label = tk.Label(
+            job_frame,
+            text= "Full time",
+            font=self.TITLE_STYLE,
+            padx=80,
+            pady=5
+        )
+        employement_type_label.grid(row=2, column=1)
+
+        date_posted_label = tk.Label(
+            job_frame,
+            text= "21-Jan-2024",
+            font=self.TITLE_STYLE,
+            pady=5
+        )
+        date_posted_label.grid(row=0, column=3)
+
+        apply_link = tk.Button(
+            job_frame,
+            text="Apply Link",
+            font=self.TITLE_STYLE,
+            bg="#3632a8",
+            fg="#fff",
+        )
+        apply_link.grid(row=1, column=3)
+
+        return job_frame
+
 
     def center_window(self, window, width, height):
         # Get screen width and height
@@ -118,3 +248,5 @@ class HomeScreenDisplay:
 
         # Set geometry
         window.geometry(f'{width}x{height}+{x}+{y}')
+
+
