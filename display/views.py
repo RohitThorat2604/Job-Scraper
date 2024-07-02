@@ -119,12 +119,127 @@ class HomeScreenDisplay:
         return profile_frame
 
     def render_search_result_frame(self):
+
+        self.lower_limit = 0
+        self.upper_limit = 3
+        
+        def render_3_jobs(job_search_result, LOWER_LIMIT, UPPER_LIMIT):
+            
+            self.lower_limit = LOWER_LIMIT
+            self.upper_limit = UPPER_LIMIT
+
+            existing_job_frame = job_container.winfo_children()
+            for job_frame in existing_job_frame:
+                job_frame.destroy()
+
+            """
+            lower limit should always be greater the ZERO OR(else) it should equal to passed lower_limit.
+            The following line of code ensures that
+            """
+            LOWER_LIMIT = 0 if LOWER_LIMIT < 0 else LOWER_LIMIT
+
+            """
+            upper limit should always be less the LENGHT OF job_search_result OR(else) it should be equal to passed upper_limit.
+            The following line of code ensures that
+            """
+            UPPER_LIMIT = len(job_search_result) if UPPER_LIMIT > len(job_search_result) else UPPER_LIMIT
+
+            
+            for job in job_search_result[LOWER_LIMIT: UPPER_LIMIT ]:
+                job_frame = self.create_job_frame(job_container, job["job_title"], job["company_name"], job["job_location"], job["experience_level"], job["employement_type"], job["date_posted"], job["apply_link"])
+                job_frame.grid()
+
+        job_search_result = [
+            {
+                "job_title": "Java Developer 1",
+                "company_name": "Capgemini",
+                "job_location": "Pune",
+                "experience_level": "1 year",
+                "employement_type": "Full Time",
+                "date_posted": "21-Jan-2024",
+                "apply_link": "linked.com"
+            },
+            {
+                "job_title": "Java Developer 2",
+                "company_name": "Capgemini",
+                "job_location": "Pune",
+                "experience_level": "1 year",
+                "employement_type": "Full Time",
+                "date_posted": "21-Jan-2024",
+                "apply_link": "linked.com"
+            },
+            {
+                "job_title": "Java Developer 3",
+                "company_name": "Capgemini",
+                "job_location": "Pune",
+                "experience_level": "1 year",
+                "employement_type": "Full Time",
+                "date_posted": "21-Jan-2024",
+                "apply_link": "linked.com"
+            },
+            {
+                "job_title": "Java Developer 4",
+                "company_name": "Capgemini",
+                "job_location": "Pune",
+                "experience_level": "1 year",
+                "employement_type": "Full Time",
+                "date_posted": "21-Jan-2024",
+                "apply_link": "linked.com"
+            },
+            {
+                "job_title": "Java Developer 5",
+                "company_name": "Capgemini",
+                "job_location": "Pune",
+                "experience_level": "1 year",
+                "employement_type": "Full Time",
+                "date_posted": "21-Jan-2024",
+                "apply_link": "linked.com"
+            },
+            {
+                "job_title": "Java Developer 6",
+                "company_name": "Capgemini",
+                "job_location": "Pune",
+                "experience_level": "1 year",
+                "employement_type": "Full Time",
+                "date_posted": "21-Jan-2024",
+                "apply_link": "linked.com"
+            },
+            {
+                "job_title": "Java Developer 7",
+                "company_name": "Capgemini",
+                "job_location": "Pune",
+                "experience_level": "1 year",
+                "employement_type": "Full Time",
+                "date_posted": "21-Jan-2024",
+                "apply_link": "linked.com"
+            },
+            {
+                "job_title": "Java Developer 8",
+                "company_name": "Capgemini",
+                "job_location": "Pune",
+                "experience_level": "1 year",
+                "employement_type": "Full Time",
+                "date_posted": "21-Jan-2024",
+                "apply_link": "linked.com"
+            },
+            {
+                "job_title": "Java Developer 9",
+                "company_name": "Capgemini",
+                "job_location": "Pune",
+                "experience_level": "1 year",
+                "employement_type": "Full Time",
+                "date_posted": "21-Jan-2024",
+                "apply_link": "linked.com"
+            }
+        ]
+
         search_result_frame = tk.Frame(
             self.home_frame,
             width = 100,
             # highlightbackground="red",
             # highlightthickness=1,
             height=180,
+            padx=40
         )
 
         
@@ -132,8 +247,8 @@ class HomeScreenDisplay:
         search_result_count_label = tk.Label(
             search_result_frame,
             text="56 Jobs found matching your skills",
-            pady=20,
-            padx=40,
+            # pady=20,
+            # padx=40,
             # highlightbackground="green",
             # highlightthickness=1,
             anchor="w"
@@ -144,26 +259,39 @@ class HomeScreenDisplay:
             search_result_frame,
             # highlightbackground="green",
             # highlightthickness=1,
-            padx=40
+            pady=20
         )
         job_container.grid(sticky="ew")
 
-        job_frame = self.create_job_frame(job_container)
-        job_frame.grid()
         
-        job_frame = self.create_job_frame(job_container)
-        job_frame.grid()
-        
-        job_frame = self.create_job_frame(job_container)
-        job_frame.grid()
-        
-        
+        render_3_jobs(job_search_result, self.lower_limit, self.upper_limit)
 
+
+        prev_button = tk.Button(
+            search_result_frame,
+            text="Previous",
+            font=self.TITLE_STYLE,
+            bg='#4CAF50', fg='#fff',
+            command= lambda : render_3_jobs(job_search_result, self.lower_limit - 3, self.upper_limit - 3)
+        )
+        prev_button.grid(row=3, sticky="w")
+
+        next_button = tk.Button(
+            search_result_frame,
+            text="Next",
+            font=self.TITLE_STYLE,
+            bg='#4CAF50', fg='#fff',
+            command= lambda : render_3_jobs(job_search_result, self.lower_limit + 3, self.upper_limit + 3)
+        )
+        next_button.grid(row=3, sticky="e")
+        
+        
+        
 
 
         return search_result_frame
 
-    def create_job_frame(self, job_container):
+    def create_job_frame(self, job_container, job_title, company_name, job_location, experience_level, employement_type, date_posted, apply_link):
         job_frame = tk.Frame(
             job_container,
             highlightbackground="black",
@@ -173,7 +301,7 @@ class HomeScreenDisplay:
 
         job_title_label = tk.Label(
             job_frame,
-            text="Java developer",
+            text= job_title,
             font=self.TITLE_STYLE,
             width=30,
             pady=5,
@@ -181,18 +309,18 @@ class HomeScreenDisplay:
         )
         job_title_label.grid(columnspan=2)
 
-        company_name = tk.Label(
+        company_name_label = tk.Label(
             job_frame,
-            text= "Capgemini",
+            text= company_name,
             font=self.TITLE_STYLE,
             padx=70,
             pady=5
         )
-        company_name.grid()
+        company_name_label.grid()
 
         location_label = tk.Label(
             job_frame,
-            text= "Pune, India",
+            text= job_location,
             font=self.TITLE_STYLE,
             padx=70,
             pady=5
@@ -201,7 +329,7 @@ class HomeScreenDisplay:
         
         experience_level_label = tk.Label(
             job_frame,
-            text= "1 Year",
+            text= experience_level,
             font=self.TITLE_STYLE,
             padx=80,
             pady=5
@@ -210,7 +338,7 @@ class HomeScreenDisplay:
 
         employement_type_label = tk.Label(
             job_frame,
-            text= "Full time",
+            text= employement_type,
             font=self.TITLE_STYLE,
             padx=80,
             pady=5
@@ -219,20 +347,20 @@ class HomeScreenDisplay:
 
         date_posted_label = tk.Label(
             job_frame,
-            text= "21-Jan-2024",
+            text= date_posted,
             font=self.TITLE_STYLE,
             pady=5
         )
         date_posted_label.grid(row=0, column=3)
 
-        apply_link = tk.Button(
+        apply_link_label = tk.Button(
             job_frame,
             text="Apply Link",
             font=self.TITLE_STYLE,
             bg="#3632a8",
             fg="#fff",
         )
-        apply_link.grid(row=1, column=3)
+        apply_link_label.grid(row=1, column=3)
 
         return job_frame
 
