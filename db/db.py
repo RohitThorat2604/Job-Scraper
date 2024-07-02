@@ -41,6 +41,21 @@ def validate_login(username, password):
     conn.close()
     return result is not None
 
+def extract_user_info(username):
+    conn = mysql.connector.connect(
+            host="bd29ifufkltzcl7iptht-mysql.services.clever-cloud.com",
+            user="uxrjacjjzqdnv51i",
+            password="qaz4uLVg4gfP6semxwUg",
+            database="bd29ifufkltzcl7iptht"
+    )
+    cursor = conn.cursor(dictionary=True)
+    query = "SELECT * FROM User WHERE username = %s"
+    cursor.execute(query, (username,))
+    result = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return result
+
 
 """""
 TODO:

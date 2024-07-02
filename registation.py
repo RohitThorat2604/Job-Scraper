@@ -10,9 +10,7 @@ class JobPortal:
     def __init__(self, master):
         self.master = master
         self.master.title("Job Portal - Register")
-
-        views.HomeScreenDisplay(self.master)
-        return
+        
 
         # self.master.geometry("600x450")
         self.center_window(self.master, 600, 450)
@@ -176,7 +174,10 @@ class JobPortal:
                     RENDERING HOME SCREEN HERE 
                 #########################
                 """
-                # views.HomeScreenDisplay(self.master)
+                self.register_window.destroy()
+                self.login_window.destroy()
+                user_info = db.extract_user_info(username)
+                views.HomeScreenDisplay(self.master, user_info)
 
 
             else:

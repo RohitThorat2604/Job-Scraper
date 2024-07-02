@@ -5,7 +5,9 @@ import PIL.Image
 import PIL.ImageTk
 
 class HomeScreenDisplay:
-    def __init__(self, master):
+    def __init__(self, master, user_info):
+        self.user_info = user_info
+
 
         self.WINDOW_HEIGHT = 1200
         self.WINDOW_WIDTH = 680
@@ -50,7 +52,7 @@ class HomeScreenDisplay:
     def render_profile_frame(self):
 
 
-        skills = ["java", "mysql", "c++"]
+        
 
         # Create a frame to hold the profile information
         profile_frame = tk.Frame(self.home_frame, 
@@ -69,7 +71,7 @@ class HomeScreenDisplay:
         # profile_frame.grid_rowconfigure(12, weight=1)
 
         # Section 1: Name
-        name_label = tk.Label(profile_frame, text="Siddharth Pawar", font=("Arial", 12, "bold"),  highlightbackground="black", highlightthickness=2,)
+        name_label = tk.Label(profile_frame, text= self.user_info["name"] , font=("Arial", 12, "bold"),  highlightbackground="black", highlightthickness=2,)
         name_label.grid(row=0, column=0, pady=10, sticky="ew")
 
 
@@ -80,21 +82,25 @@ class HomeScreenDisplay:
                 )
         user_creds_frame.grid(row=1, column=0, pady=30, columnspan=1, sticky="ew")
 
-        Username_label = tk.Label(user_creds_frame, text="siddharth01", font=self.TITLE_STYLE)
+        Username_label = tk.Label(user_creds_frame, text= self.user_info["username"], font=self.TITLE_STYLE)
         Username_label.grid(padx=20, pady=10)
 
-        email_label = tk.Label(user_creds_frame, text="sidd@gmail.com", font=self.TITLE_STYLE)
+        email_label = tk.Label(user_creds_frame, text=self.user_info["email"], font=self.TITLE_STYLE)
         email_label.grid(padx=20, pady=10)
 
-        city_label = tk.Label(user_creds_frame, text="Pune", font=self.TITLE_STYLE)
+        city_label = tk.Label(user_creds_frame, text=self.user_info["city"], font=self.TITLE_STYLE)
         city_label.grid(padx=20, pady=10)
 
-        experience_label = tk.Label(user_creds_frame, text="3 Years", font=self.TITLE_STYLE)
+        experience_label = tk.Label(user_creds_frame, text= f'{self.user_info["experience"]} Year(s)', font=self.TITLE_STYLE)
         experience_label.grid(padx=20, pady=10)
 
 
 
         # Section 3: Skills
+        skills = self.user_info["skills"]
+        skills = skills[1: -1]
+        skills = skills.split(",")
+
         skills_frame = tk.Frame(profile_frame,
                     highlightbackground="black", 
                     highlightthickness=2,
