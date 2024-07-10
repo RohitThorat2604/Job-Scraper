@@ -5,14 +5,67 @@ from selenium.webdriver.chrome.options import Options
 
 from urllib.parse import urlparse
 
-def getJobDetailsFromLinkedIn(link):
+from datetime import datetime, timedelta
 
+
+def calculate_previous_date(time_interval):
+    # Split the time interval into number and unit
+    parts = time_interval.split()
+    if len(parts) != 3 or parts[2] != 'ago':
+        raise ValueError("Invalid time interval format. Please use 'X unit ago' format.")
+    
+    try:
+        num = None
+        unit = None
+        # 1 year(s) ago
+        if (parts[1] == "year" or parts[1] == "years"):
+            num = int(parts[0]) * 52.143
+            unit = "week"
+        elif (parts[1] == "month" or parts[1] == "months"):
+            num = int(parts[0]) * 4.345
+            unit = "week"
+        else:
+            num = int(parts[0]) 
+            unit = parts[1]
+
+    except ValueError:
+        raise ValueError("Invalid number format in time interval.")
+    
+    # Define the mapping of units to timedelta parameters
+    unit_map = {
+        'week': 'weeks',
+        'day': 'days',
+        'hour': 'hours',
+        'weeks': 'weeks',
+        'days': 'days',
+        'hours': 'hours'
+    }
+    
+    if unit not in list(unit_map.keys()) + ["year", "years", "month", "months"] :
+        raise ValueError("Unsupported time unit. Supported units are: year, month, week, day, hour.")
+    
+    # Calculate the timedelta
+    delta_args = {unit_map[unit]: num}
+    delta = timedelta(**delta_args)
+    
+    # Get the current date
+    current_date = datetime.now()
+    
+    # Calculate the previous date
+    previous_date = current_date - delta
+    
+    return previous_date.strftime("%d-%m-%Y")  # Format the date as DD-MM-YYYY
+
+
+def getJobDetailsFromLinkedIn(link):
+    
     job_detail = dict()
 
     options = Options()
     options.add_argument('--headless=new')
 
     driver = webdriver.Chrome(options=options)
+    # driver = webdriver.Chrome()
 
     driver.get(link)
 
@@ -32,15 +85,19 @@ def getJobDetailsFromLinkedIn(link):
     job_type = driver.find_elements(by=By.CSS_SELECTOR, value="ul.description__job-criteria-list li span")[1]
     job_detail["job_type"] = job_type.get_attribute("innerText")
 
+    #extract date posted
+    job_date_posted = driver.find_element(by = By.CSS_SELECTOR, value=".posted-time-ago__text")
+    job_detail["job_date_posted"] = calculate_previous_date( job_date_posted.get_attribute("innerText") )
+
     #extract apply link
     job_detail["apply_link"] = link
 
     #extract job portal
     job_detail["job_portal"] = urlparse(link).netloc
 
-    
     driver.quit()
 
+    
     return job_detail
 
 
@@ -52,6 +109,7 @@ def extractJobLinksFromLinkedIn(title, location):
     options.add_argument('--headless=new')
 
     driver = webdriver.Chrome(options= options)
+    # driver = webdriver.Chrome()
 
     # go to google homepage
     driver.get("https://www.google.com/")
@@ -94,7 +152,7 @@ def extractJobLinksFromLinkedIn(title, location):
             job_detail = getJobDetailsFromLinkedIn(link)
             JOB_DETAILS.append(job_detail)
         except Exception:
-            continue
+            print("error in getJobDetailsFromLinkedIn(link)")
 
     for job_detail in JOB_DETAILS:
         print(job_detail)
